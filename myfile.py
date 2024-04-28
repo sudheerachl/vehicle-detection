@@ -20,7 +20,7 @@ licol = "License Plate color model/best.pt"
 results_dict = {"objects_detected": [], "sticker_count": 0, "flag_count": 0}
 
 
-def process_image(image_path):
+def process_image(image):
   """
   Analyzes an image and returns a dictionary containing the results.
 
@@ -31,7 +31,8 @@ def process_image(image_path):
       A dictionary containing the analysis results.
   """
   # Load the image
-  image = cv2.imread(image_path)
+ image = cv2.imdecode(np.fromfile(image.file, dtype=np.uint8), cv2.IMREAD_COLOR)  
+
 
   # Object detection using YOLO models
   model = YOLO('Detection Model/best.pt')
