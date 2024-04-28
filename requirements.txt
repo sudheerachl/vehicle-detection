@@ -8,7 +8,7 @@ easyocr
 
 ultralytics  
 scikit-learn 
-json
+
 numpy
 
 
