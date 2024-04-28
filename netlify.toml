@@ -1,0 +1,3 @@
+[build]
+  # Remove the command line if you're not using Flask-Assets
+  # command = ""
