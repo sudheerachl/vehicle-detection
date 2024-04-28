@@ -1,5 +1,5 @@
-python== 3.11
-Flask==3.0.2
+python== 3.9
+Flask==2.2.2
 Werkzeug==3.0.1
 opencv-python
 pytesseract
