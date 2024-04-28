@@ -1,18 +1,15 @@
-# Basic dependencies
 python== 3.7
-flask
+Flask==3.0.2
 requests
-Werkzeug
+Werkzeug==3.0.1
 opencv-python
 pytesseract
 Pillow
 easyocr
 tkinter
-# Deep learning libraries (assuming you're using them)
-ultralytics  # Might require specific version depending on your usage
-yolov5
-# Text processing
-scikit-learn  # For KMeans clustering (if used)
-
-# JSON processing
+ultralytics  
+scikit-learn 
 json
+numpy
+
+
