@@ -1,9 +1,10 @@
 {
   "version": 2,
   "builds": [
-    { "src": "app.py", 
+    {
+      "src": "app.py",
       "use": "@vercel/python",
-    "python": "3.7" 
+      "python": "3.7"  // Replace with your required version (if necessary)
     }
   ],
   "routes": [
