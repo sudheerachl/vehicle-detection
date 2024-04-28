@@ -1,0 +1,17 @@
+# Basic dependencies
+flask
+requests
+Werkzeug
+opencv-python
+pytesseract
+Pillow
+easyocr
+
+# Deep learning libraries (assuming you're using them)
+ultralytics  # Might require specific version depending on your usage
+
+# Text processing
+scikit-learn  # For KMeans clustering (if used)
+
+# JSON processing
+json
