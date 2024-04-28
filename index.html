@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tutorial</title>
+  </head>
+
+  <body>
+    <h1 class="text-center">Vehicle detection</h1>
+
+    <form id="image-form" class="p-3 text-center" action="/" method="post" enctype="multipart/form-data">
+      <input class="form-control" type="file" name="imagefile" id="image-input">
+      <input class="btn btn-primary mt-3" type="submit" value="Predict Image" >
+    </form>
+
+    <p id="prediction" class="text-center"></p>
+
+    <script>
+      // Get references to form elements
+      const imageInput = document.getElementById('image-input');
+      const predictionElement = document.getElementById('prediction');
+
+      // Handle form submission
+      const form = document.getElementById('image-form');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent default form submission
+
+        // Create a new FormData object
+        const formData = new FormData();
+        formData.append('imagefile', imageInput.files[0]);
+
+        // Send an AJAX request to the server
+        fetch('/', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json()) // Parse JSON response
+        .then(data => {
+          // Update prediction element with the response (data.prediction)
+          predictionElement.textContent = data.prediction;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          predictionElement.textContent = 'An error occurred.';
+        });
+      });
+    </script>
+  </body>
+</html>
