@@ -9,9 +9,7 @@ app = Flask(__name__)
 app.config['FLASK_ENV'] = 'development'  # Optional (may not be necessary)
 
 
-@app.route('/', methods=['GET'])
-def hello_word():
-    return render_template('index.html')
+
 
 
 @app.route('/', methods=['POST'])
