@@ -21,68 +21,77 @@ results_dict = {"objects_detected": [], "sticker_count": 0, "flag_count": 0}
 
 
 def process_image(image):
-  """
-  Analyzes an image and returns a dictionary containing the results.
+    """
+    Analyzes an image and returns a dictionary containing the results.
 
-  Args:
-      image_path: Path to the image file.
+    Args:
+        image: A file-like object representing the uploaded image.
 
-  Returns:
-      A dictionary containing the analysis results.
-  """
-  # Load the image
- image = cv2.imdecode(np.fromfile(image.file, dtype=np.uint8), cv2.IMREAD_COLOR)  
+    Returns:
+        A dictionary containing the analysis results.
+    """
+
+    # Decode the image data directly using OpenCV
+    image = cv2.imdecode(np.fromfile(image.file, dtype=np.uint8), cv2.IMREAD_COLOR)
+    print("Decoded image:", image.shape)  # Print image shape for debugging
+
+    # Object detection using YOLO models
+    model = YOLO('Detection Model/best.pt')
+    results = model(image, conf=CONFIDENCE_THRESHOLD)
+    if isinstance(results, list):
+        results = results[0]
+
+    names_dict = results.names
+    boxes = results.boxes.xyxy.tolist()
+    class_labels = results.boxes.cls.tolist()
+
+    sticker_count = 0
+    flag_count = 0
+
+    for i, box in enumerate(boxes):
+        class_idx = class_labels[i]
+        class_name = results.names[class_idx]
+        print("Detected object:", class_name)  # Print detected object class
+
+        if class_name == "sticker":
+            sticker_count += 1
+        elif class_name == "flag":
+            flag_count += 1
+
+        if class_name == "license-plate":
+            crop_and_display_license_plate(image.copy(), box)  # Pass a copy to avoid modifying original
+
+        if class_name == "car":
+            crop_car(image.copy(), box)
+
+        if class_name == "logo":
+            crop_logo(image.copy(), box)
+
+    # Update results_dict with sticker and flag counts
+    results_dict["sticker_count"] = sticker_count
+    results_dict["flag_count"] = flag_count
+
+    # Check if logo or car color was detected
+    if not any(item["class_name"] == "logo" for item in results_dict["objects_detected"]):
+        results_dict["objects_detected"].append({
+            "class_name": "logo",
+            "manufacturer": "unknown"
+        })
+
+    if not any(item["class_name"] == "car" for item in results_dict["objects_detected"]):
+        results_dict["objects_detected"].append({
+            "class_name": "car",
+            "color": "unknown"
+        })
+
+    # Print final results dictionary for debugging
+    print("Final results:", results_dict)
+
+    return results_dict
 
 
-  # Object detection using YOLO models
-  model = YOLO('Detection Model/best.pt')
-  results = model(image, conf=CONFIDENCE_THRESHOLD)
-  if isinstance(results, list):
-    results = results[0]
+# ... other functions remain the same (crop_and_display_license_plate, etc.)
 
-  names_dict = results.names
-  boxes = results.boxes.xyxy.tolist()
-  class_labels = results.boxes.cls.tolist()
-
-  sticker_count = 0
-  flag_count = 0
-
-  for i, box in enumerate(boxes):
-    class_idx = class_labels[i]
-    class_name = results.names[class_idx]
-
-    if class_name == "sticker":
-      sticker_count += 1
-    elif class_name == "flag":
-      flag_count += 1
-
-    if class_name == "license-plate":
-      crop_and_display_license_plate(image, box)
-
-    if class_name == "car":
-      crop_car(image, box)
-
-    if class_name == "logo":
-      crop_logo(image, box)
-
-  # Update results_dict with sticker and flag counts
-  results_dict["sticker_count"] = sticker_count
-  results_dict["flag_count"] = flag_count
-
-  # Check if logo or car color was detected
-  if not any(item["class_name"] == "logo" for item in results_dict["objects_detected"]):
-    results_dict["objects_detected"].append({
-      "class_name": "logo",
-      "manufacturer": "unknown"
-    })
-
-  if not any(item["class_name"] == "car" for item in results_dict["objects_detected"]):
-    results_dict["objects_detected"].append({
-      "class_name": "car",
-      "color": "unknown"
-    })
-
-  return results_dict
 
 
 def crop_and_display_license_plate(image, license_plate_box):
