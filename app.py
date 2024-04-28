@@ -42,4 +42,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=False)  # Remove debug=True for deployment
+    app.run()  # Remove debug=True for deployment
