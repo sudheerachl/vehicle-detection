@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, url_for, render_template
 import json
-from myfile import display_image_info  # Import your model code
+from myfile import process_image as display_image_info 
 from werkzeug.utils import secure_filename
 import os
 
