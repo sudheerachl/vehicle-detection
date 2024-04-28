@@ -1,5 +1,4 @@
-import tkinter as tk
-from tkinter import filedialog
+
 import cv2
 import pytesseract
 from PIL import Image, ImageTk
@@ -21,10 +20,7 @@ results_dict = {"objects_detected": [], "sticker_count": 0, "flag_count": 0}
 def browse_image():
     global results_dict
     # Open a file dialog for image selection
-    filename = filedialog.askopenfilename(initialdir="/", title="Select Image",
-                                          filetypes=(("Image files", ".jpg *.png"), ("All files", ".*")))
-    # Update the image label with the selected image path
-    image_label.config(text=filename)
+    
     # Display the selected image in the Tkinter window
     display_image_info(filename)
     # Convert results_dict to JSON format and print
