@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # Set empty build command (assuming no build process needed)
 app.config['FLASK_ENV'] = 'development'  # Optional (may not be necessary)
-
+app.debug = True 
 
 
 
