@@ -4,7 +4,7 @@
     {
       "src": "app.py",
       "use": "@vercel/python",
-      "python": "3.7"  // Replace with your required version (if necessary)
+      "python": "3.7"
     }
   ],
   "routes": [
