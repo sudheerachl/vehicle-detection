@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, url_for, render_template
 import json
-from myfile import process_image as display_image_info 
+from myfile import process_image as display_image_info  # Import your model code
 from werkzeug.utils import secure_filename
 import os
 
@@ -9,6 +9,9 @@ app = Flask(__name__)
 # Configure upload folder (adjust path if needed)
 UPLOAD_FOLDER = os.path.join(app.instance_path, 'images')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Create folder if it doesn't exist
+
+# Set empty build command (assuming no build process needed)
+app.config['FLASK_ENV'] = 'development'  # Optional (may not be necessary)
 
 @app.route('/', methods=['GET'])
 def hello_word():
@@ -38,6 +41,10 @@ def index():
             # Convert results to JSON format (assuming results is a dictionary or list)
             prediction = json.dumps(results, indent=4)
 
+            # Return JSON data for further processing (uncomment if preferred)
+            # return prediction
+
+            # Render template with prediction (default behavior)
             return render_template('index.html', prediction=prediction)
         except Exception as e:  # Catch any errors during processing
             error_message = f"An error occurred: {str(e)}"
@@ -46,4 +53,4 @@ def index():
     return render_template('index.html')  # Render template for GET requests
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()  # Remove debug=True for deployment
